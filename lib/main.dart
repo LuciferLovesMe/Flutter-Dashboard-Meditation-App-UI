@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ui_flutter_meditation_app/constants.dart';
+import 'package:ui_flutter_meditation_app/screens/detail_screens.dart';
+import 'package:ui_flutter_meditation_app/widgets/search_bar.dart';
 
-import 'card_widget.dart';
+import 'widgets/bottom_navbar.dart';
+import 'widgets/card_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,34 +38,7 @@ class HomeScreen extends StatelessWidget {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        height: 70,
-        color: Colors.white,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            BottomNavbarItem(
-              title: "Today",
-              svgSrc: "assets/icons/calendar.svg",
-              press: (){},
-              isActive: false,
-            ),
-            BottomNavbarItem(
-              title: "All Excercises",
-              svgSrc: "assets/icons/gym.svg",
-              press: (){},
-              isActive: true,
-            ),
-            BottomNavbarItem(
-              title: "Settings",
-              svgSrc: "assets/icons/Settings.svg",
-              press: (){},
-              isActive: true,
-            )
-          ],
-        ),
-      ),
+      bottomNavigationBar: BottomNavBar(),
       body: Stack(
         children: <Widget>[
           Container(
@@ -100,18 +76,7 @@ class HomeScreen extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.white),
-                    child: TextField(
-                      decoration: InputDecoration(
-                          icon: SvgPicture.asset("assets/icons/search.svg"),
-                          hintText: "Search...",
-                          border: InputBorder.none),
-                    ),
-                  ),
+                  SearchBar(),
                   SizedBox(
                     height: 15,
                   ),
@@ -135,7 +100,12 @@ class HomeScreen extends StatelessWidget {
                         CardWidget(
                           title: "Meditation",
                           svgSrc: "assets/icons/Meditation.svg",
-                          press: () {},
+                          press: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return DetailScreens();
+                            }));
+                          },
                         ),
                         CardWidget(
                           title: "Yoga",
@@ -148,37 +118,6 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class BottomNavbarItem extends StatelessWidget {
-  final String title;
-  final String svgSrc;
-  final VoidCallback press;
-  final bool isActive;
-
-  const BottomNavbarItem({
-    Key? key, 
-    required this.svgSrc, 
-    required this.title,
-    required this.press,
-    this.isActive = false
-    }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          SvgPicture.asset(svgSrc),
-          Text(
-            title,
-            style: TextStyle(color: (isActive) ? kActiveIconcolor : kTextColor),
           )
         ],
       ),
